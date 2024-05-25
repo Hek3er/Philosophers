@@ -1,37 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/01 11:23:07 by azainabi          #+#    #+#             */
-/*   Updated: 2024/05/01 11:37:34 by azainabi         ###   ########.fr       */
+/*   Created: 2024/05/22 13:28:31 by azainabi          #+#    #+#             */
+/*   Updated: 2024/05/24 00:10:02 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-char	**join2d_arrays(char **args, char *tmp_arg)
+int	main(int ac, char **av)
 {
-	if (!args)
-		return (NULL);
-	
-}
+	t_table	tabla;
 
-void	parsing(int nb, char **args, t_table *table)
-{
-	int		i;
-	char	**tmp_args;
-
-	i = 0;
-	if (nb == 5)
+	if (ac == 5 || ac == 6)
 	{
-		while (i < nb)
-		{
-			tmp_args = ft_split(args[i], ' ');
-			
-			i++;
-		}
+		parse_input(&tabla, ac, av);
 	}
+	else
+	{
+		throw_error("Invalid Arguments\n\
+		Usage: ./philo [n_philos] [t_die] [t_eat] [t_sleep] {n_meal}(optional)", 1);
+	}
+
+	// printf("sleeping for 30 sec\n");
+	// ft_usleep(30000);
+	// printf("DONE\n");
 }

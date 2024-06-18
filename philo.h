@@ -28,6 +28,7 @@ typedef struct s_table
 	uint64_t		time_to_sleep;
 	uint64_t		number_of_meals;
 	t_philo			*philos;
+	pthread_mutex_t	*forks;
 }				t_table;
 
 // utils

@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:44:52 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/22 14:28:57 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:10:51 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	init_var(t_table *tabla)
 		tabla->philos[i].is_dead = 0;
 		tabla->philos[i].id = i + 1;
 		tabla->philos[i].tabla = tabla;
+		tabla->philos[i].last_meal = 0;
 		if (pthread_mutex_init(&tabla->forks[i], NULL) == -1)
 			throw_error("Init Mutex Failed", 3);
 		i++;

@@ -2,7 +2,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3
 
 SRC = main.c parse.c utils.c time.c
 
@@ -23,5 +23,7 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
+
+re: fclean all
 
 .PHONY = clean

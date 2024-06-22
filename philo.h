@@ -14,6 +14,7 @@ typedef struct s_philo
 {
 	int				id;
 	int				is_dead;
+	uint64_t		last_meal;
 	pthread_t		th;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
@@ -23,12 +24,14 @@ typedef struct s_philo
 typedef struct s_table
 {
 	int				number_of_philosophers;
+	uint64_t		start;
 	uint64_t		time_to_eat;
 	uint64_t		time_to_die;
 	uint64_t		time_to_sleep;
 	uint64_t		number_of_meals;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	print;
 }				t_table;
 
 // utils

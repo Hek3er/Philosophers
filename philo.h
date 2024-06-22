@@ -33,8 +33,11 @@ typedef struct s_table
 
 // utils
 uint64_t	ft_atoi(char *str);
+void		ft_write(char *str, int fd);
 void		throw_error(char *str, int code);
 void		parse_input(t_table *tabla, int ac, char **av);
-void		ft_usleep(useconds_t utime);
+uint64_t	get_time(void);
+void		ft_usleep(uint64_t	time);
+void		init_var(t_table *tabla);
 
 #endif

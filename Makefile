@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS = -Wall -Werror -Wextra
 
-SRC = main.c parse.c utils.c
+SRC = main.c parse.c utils.c time.c
 
 OSRC = $(SRC:.c=.o)
 

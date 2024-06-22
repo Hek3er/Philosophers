@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:44:52 by azainabi          #+#    #+#             */
-/*   Updated: 2024/05/24 15:52:25 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/06/22 14:28:57 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,23 @@ void	parse_input(t_table *tabla, int ac, char **av)
 		tabla->number_of_meals = -1;
 	if (!tabla->number_of_philosophers || !tabla->time_to_die 
 	|| !tabla->time_to_eat || !tabla->time_to_sleep)
-		throw_error("Invalid Arguments", 2);
+		throw_error("Invalid Arguments", 3);
+	init_var(tabla);
+}
+
+void	set_forks(t_table *tabla)
+{
+	int	i;
+
+	tabla->philos[0].l_fork = &tabla->forks[0];
+	tabla->philos[0].r_fork = &tabla->forks[tabla->number_of_philosophers - 1];
+	i = 1;
+	while (i < tabla->number_of_philosophers)
+	{
+		tabla->philos[i].l_fork = &tabla->forks[i];
+		tabla->philos[i].r_fork = &tabla->forks[i - 1];
+		i++;
+	}
 }
 
 void	init_var(t_table *tabla)
@@ -43,15 +59,9 @@ void	init_var(t_table *tabla)
 		tabla->philos[i].is_dead = 0;
 		tabla->philos[i].id = i + 1;
 		tabla->philos[i].tabla = tabla;
-		pthread_mutex_init(&tabla->forks[i], NULL);
+		if (pthread_mutex_init(&tabla->forks[i], NULL) == -1)
+			throw_error("Init Mutex Failed", 3);
 		i++;
 	}
-	tabla->philos[0].l_fork = &tabla->forks[0];
-	tabla->philos[0].r_fork = &tabla->forks[tabla->number_of_philosophers - 1];
-	i = 1;
-	while (i < tabla->number_of_philosophers)
-	{
-		tabla->philos[i].l_fork = &tabla->forks[i];
-		tabla->philos[i].r_fork = &tabla->forks[i - 1];
-	}
+	set_forks(tabla);
 }

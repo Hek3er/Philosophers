@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:59:41 by azainabi          #+#    #+#             */
-/*   Updated: 2024/05/23 23:28:51 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/06/22 13:27:14 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ int	ft_isnumber(char c)
 	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
-}
-
-void	ft_usleep(useconds_t utime)
-{
-	utime /= 0.001;
-	usleep(utime);
 }
 
 uint64_t	ft_atoi(char *str)

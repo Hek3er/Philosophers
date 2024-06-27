@@ -18,6 +18,8 @@ void	parse_input(t_table *tabla, int ac, char **av)
 	tabla->time_to_die = ft_atoi(av[2]);
 	tabla->time_to_eat = ft_atoi(av[3]);
 	tabla->time_to_sleep = ft_atoi(av[4]);
+	tabla->death = 0;
+	tabla->print_c = 0;
 	if (ac == 6)
 		tabla->number_of_meals = ft_atoi(av[5]);
 	else

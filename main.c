@@ -6,171 +6,78 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:28:31 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/23 10:58:54 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/06/28 23:09:09 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_status(t_philo *philo, char *str)
-{
-	
-	pthread_mutex_lock(&philo->tabla->death_mut);
-	if (!philo->tabla->death)
-	{
-		pthread_mutex_lock(&philo->tabla->print);
-		printf("%llu %d %s\n", get_time() - philo->tabla->start, philo->id, str);
-		pthread_mutex_unlock(&philo->tabla->print);
-	}
-	pthread_mutex_unlock(&philo->tabla->death_mut);
-}
-
-int check_number_of_meals(t_table *tabla)
-{
-	int count = 0;
-	int	meal_count = 0;
-	int i = 0;
-
-	while (i < tabla->number_of_philosophers)
-	{
-		pthread_mutex_lock(&tabla->philos[i].meal_counter_mutex);
-		meal_count = tabla->philos[i].meal_c;
-		pthread_mutex_unlock(&tabla->philos[i].meal_counter_mutex);
-		if (meal_count >= tabla->number_of_meals)
-			count++;
-		i++;
-	}
-	if (count == tabla->number_of_philosophers)
-		return (1);
-	return (0);
-}
-
-int	check_philo_death(t_table *tabla)
+int	create_threads(t_table *tabla)
 {
 	int			i;
-	uint64_t	last_meal;
+	pthread_t	monitor_th;
 
 	i = 0;
-	while (i < tabla->number_of_philosophers)
+	while (i < tabla->number_of_philo)
 	{
-		pthread_mutex_lock(&tabla->philos[i].last_meal_mutex);
-		last_meal = tabla->philos[i].last_meal;
-		pthread_mutex_unlock(&tabla->philos[i].last_meal_mutex);
-		if (get_time() - last_meal > tabla->time_to_die)
-		{
-			pthread_mutex_lock(&tabla->death_mut);
-			tabla->death = 1;
-			pthread_mutex_lock(&tabla->print);
-			printf("%llu %d died\n", get_time() - tabla->start, tabla->philos[i].id);
-			pthread_mutex_unlock(&tabla->print);
-			pthread_mutex_unlock(&tabla->death_mut);
-			return (1);
-		}
+		if (pthread_create(&tabla->philos[i].th, NULL, &routine, \
+		&tabla->philos[i]) == -1)
+			return (ft_write("pthread_destroy_failed\n", 2), 0);
+		if (pthread_detach(tabla->philos[i].th) == -1)
+			return (ft_write("pthread_destroy failed\n", 2), 0);
 		i++;
 	}
-	return (0);
+	if (pthread_create(&monitor_th, NULL, &monitor, tabla) == -1)
+		return (ft_write("pthread_destroy failed\n", 2), 0);
+	if (pthread_join(monitor_th, NULL) == -1)
+		return (ft_write("pthread_destroy failed\n", 2), 0);
+	return (1);
 }
 
-void *monitor(void *p)
+int	destroy(t_table *tabla)
 {
-    t_table *tabla;
-    tabla = (t_table *)p;
+	int	i;
 
-    while (1)
-    {
-		if (tabla->number_of_meals != -1)
-		{
-			if (check_number_of_meals(tabla))
-				return (NULL);
-		}
-		if (check_philo_death(tabla))
-			return (NULL);
+	i = 0;
+	while (i < tabla->number_of_philo)
+	{
+		if (pthread_mutex_destroy(&tabla->forks[i]) == -1)
+			return (ft_write("pthread_destroy failed\n", 2), 0);
+		if (pthread_mutex_destroy(&tabla->philos[i].last_meal_mutex) == -1)
+			return (ft_write("pthread_destroy failed\n", 2), 0);
+		if (pthread_mutex_destroy(&tabla->philos[i].meal_counter_mut) == -1)
+			return (ft_write("pthread_destroy failed\n", 2), 0);
+		i++;
 	}
-    return NULL;
-}
-
-
-void	unlock_mutex_philo(t_philo *philo)
-{
-	if (philo->id % 2 == 0) {
-        pthread_mutex_unlock(philo->l_fork);
-        pthread_mutex_unlock(philo->r_fork);
-	} else {
-		pthread_mutex_unlock(philo->r_fork);
-        pthread_mutex_unlock(philo->l_fork);
-	}
-}
-
-void *routine(void *p)
-{
-    t_philo *philo;
-    philo = (t_philo *)p;
-
-	if (philo->id % 2 == 0)
-		usleep(50);
-
-    while (1)
-    {
-		pthread_mutex_lock(&philo->tabla->death_mut);
-		if (philo->tabla->death)
-			break;
-		pthread_mutex_unlock(&philo->tabla->death_mut);
-		if (philo->id % 2 == 0) {
-        	pthread_mutex_lock(philo->l_fork);
-        	print_status(philo, "has taken a fork");
-        	pthread_mutex_lock(philo->r_fork);
-       		print_status(philo, "has taken a fork");
-		}
-		else {
-			pthread_mutex_lock(philo->r_fork);
-        	print_status(philo, "has taken a fork");
-        	pthread_mutex_lock(philo->l_fork);
-       		print_status(philo, "has taken a fork");
-		}
-        print_status(philo, "is eating");
-
-		
-		pthread_mutex_lock(&philo->meal_counter_mutex);
-		philo->meal_c++;
-		pthread_mutex_lock(&philo->last_meal_mutex);
-        philo->last_meal = get_time();
-		pthread_mutex_unlock(&philo->last_meal_mutex);
-		pthread_mutex_unlock(&philo->meal_counter_mutex);
-
-
-        ft_usleep(philo->tabla->time_to_eat);
-		unlock_mutex_philo(philo);
-        print_status(philo, "is sleeping");
-        ft_usleep(philo->tabla->time_to_sleep);
-        print_status(philo, "is thinking");
-    }
-    return NULL;
+	if (pthread_mutex_destroy(&tabla->death_mut) == -1)
+		return (ft_write("pthread_destroy failed\n", 2), 0);
+	if (pthread_mutex_destroy(&tabla->print) == -1)
+		return (ft_write("pthread_destroy failed\n", 2), 0);
+	free(tabla->forks);
+	free(tabla->philos);
+	return (1);
 }
 
 int	main(int ac, char **av)
 {
 	t_table	tabla;
-	pthread_t	monitor_th;
 
 	if (ac == 5 || ac == 6)
 	{
-		parse_input(&tabla, ac, av);
+		if (parse_input(&tabla, ac, av) != 1)
+			return (1);
 	}
 	else
 	{
-		throw_error("Invalid Arguments\n\
-		Usage: ./philo [n_philos] [t_die] [t_eat] [t_sleep] {n_meal}(optional)", 1);
+		return (ft_write("Invalid Arguments\n\
+		Usage: ./philo [n_philos] [t_die] [t_eat] [t_sleep] {n_meal}", 1), 1);
 	}
 	tabla.start = get_time();
-	pthread_mutex_init(&tabla.print, NULL);
-	pthread_mutex_init(&tabla.death_mut, NULL);
-	for (int i = 0; i < tabla.number_of_philosophers; i++) {
-		if (pthread_create(&tabla.philos[i].th, NULL, &routine, &tabla.philos[i]) == -1)
-			perror("create");
-		pthread_detach(tabla.philos[i].th);
+	if (create_threads(&tabla) == 0)
+	{
+		destroy(&tabla);
+		return (1);
 	}
-	if (pthread_create(&monitor_th, NULL, &monitor, &tabla) == -1)
-			perror("create");
-	if  (pthread_join(monitor_th, NULL) == -1)
-			perror("join");
+	if (destroy(&tabla) == 0)
+		return (1);
 }

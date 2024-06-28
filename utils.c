@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:59:41 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/22 13:27:14 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/06/28 23:11:57 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int	ft_isnumber(char c)
 	return (0);
 }
 
-uint64_t	ft_atoi(char *str)
+long	ft_atoi(char *str)
 {
 	int				i;
 	int				neg;
-	uint64_t		ret;
+	long			ret;
 
 	i = 0;
 	neg = 1;
@@ -52,13 +52,13 @@ uint64_t	ft_atoi(char *str)
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			throw_error("A number Can't be negative", 2);
+			return (ft_write("A number Can't be negative", 2), -1);
 		i++;
 	}
 	while (str[i] != '\0')
 	{
 		if (!ft_isnumber(str[i]))
-			throw_error("Please Provide a valid number", 2);
+			return (ft_write("Please Provide a valid number", 2), -1);
 		ret = ret * 10 + (str[i++] - '0');
 	}
 	return (ret * neg);

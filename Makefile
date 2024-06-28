@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS = -Wall -Werror -Wextra #-fsanitize=thread -g3
 
-SRC = main.c parse.c utils.c time.c
+SRC = main.c parse.c utils.c time.c monitor.c routine.c
 
 OSRC = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:59:41 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/28 23:11:57 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/06/29 00:11:40 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ void	ft_write(char *str, int fd)
 		i++;
 	}
 	write(fd, "\n", 1);
-}
-
-void	throw_error(char *str, int code)
-{
-	ft_write(str, 2);
-	exit(code);
 }
 
 int	ft_isnumber(char c)

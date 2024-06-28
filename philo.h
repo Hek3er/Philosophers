@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 23:09:32 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/28 23:10:21 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/06/29 00:11:35 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct s_table
 // utils
 long		ft_atoi(char *str);
 void		ft_write(char *str, int fd);
-void		throw_error(char *str, int code);
 int			parse_input(t_table *tabla, int ac, char **av);
 long		get_time(void);
 void		ft_usleep(long time);

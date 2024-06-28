@@ -65,6 +65,12 @@ void	init_var(t_table *tabla)
 		tabla->philos[i].meal_c = 0;
 		if (pthread_mutex_init(&tabla->forks[i], NULL) == -1)
 			throw_error("Init Mutex Failed", 3);
+		if (pthread_mutex_init(&tabla->philos[i].last_meal_mutex, NULL) == -1)
+			throw_error("Init Mutex Failed", 3);
+		if (pthread_mutex_init(&tabla->philos[i].meal_counter_mutex, NULL) == -1)
+			throw_error("Init Mutex Failed", 3);
+		// if (pthread_mutex_init(&tabla->philos[i].print, NULL) == -1)
+		// 	throw_error("Init Mutex Failed", 3);
 		i++;
 	}
 	set_forks(tabla);

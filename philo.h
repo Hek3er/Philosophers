@@ -37,7 +37,7 @@ typedef struct s_table
 	int				death;
 	// int				fixed_meals;
 	t_philo			*philos;
-	// pthread_mutex_t	lastmeal_mut;
+	pthread_mutex_t	death_mut;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 }				t_table;

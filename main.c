@@ -14,9 +14,15 @@
 
 void	print_status(t_philo *philo, char *str)
 {
-	pthread_mutex_lock(&philo->tabla->print);
-	printf("%llu %d %s\n", get_time() - philo->tabla->start, philo->id, str);
-	pthread_mutex_unlock(&philo->tabla->print);
+	
+	pthread_mutex_lock(&philo->tabla->death_mut);
+	if (!philo->tabla->death)
+	{
+		pthread_mutex_lock(&philo->tabla->print);
+		printf("%llu %d %s\n", get_time() - philo->tabla->start, philo->id, str);
+		pthread_mutex_unlock(&philo->tabla->print);
+	}
+	pthread_mutex_unlock(&philo->tabla->death_mut);
 }
 
 int check_number_of_meals(t_table *tabla)
@@ -52,8 +58,12 @@ int	check_philo_death(t_table *tabla)
 		pthread_mutex_unlock(&tabla->philos[i].last_meal_mutex);
 		if (get_time() - last_meal > tabla->time_to_die)
 		{
+			pthread_mutex_lock(&tabla->death_mut);
+			tabla->death = 1;
 			pthread_mutex_lock(&tabla->print);
 			printf("%llu %d died\n", get_time() - tabla->start, tabla->philos[i].id);
+			pthread_mutex_unlock(&tabla->print);
+			pthread_mutex_unlock(&tabla->death_mut);
 			return (1);
 		}
 		i++;
@@ -75,7 +85,6 @@ void *monitor(void *p)
 		}
 		if (check_philo_death(tabla))
 			return (NULL);
-		usleep(100);
 	}
     return NULL;
 }
@@ -102,6 +111,10 @@ void *routine(void *p)
 
     while (1)
     {
+		pthread_mutex_lock(&philo->tabla->death_mut);
+		if (philo->tabla->death)
+			break;
+		pthread_mutex_unlock(&philo->tabla->death_mut);
 		if (philo->id % 2 == 0) {
         	pthread_mutex_lock(philo->l_fork);
         	print_status(philo, "has taken a fork");
@@ -116,19 +129,17 @@ void *routine(void *p)
 		}
         print_status(philo, "is eating");
 
-		pthread_mutex_lock(&philo->last_meal_mutex);
-        philo->last_meal = get_time();
-		pthread_mutex_unlock(&philo->last_meal_mutex);
 		
 		pthread_mutex_lock(&philo->meal_counter_mutex);
 		philo->meal_c++;
+		pthread_mutex_lock(&philo->last_meal_mutex);
+        philo->last_meal = get_time();
+		pthread_mutex_unlock(&philo->last_meal_mutex);
 		pthread_mutex_unlock(&philo->meal_counter_mutex);
 
 
         ft_usleep(philo->tabla->time_to_eat);
 		unlock_mutex_philo(philo);
-		// pthread_mutex_unlock(philo->l_fork);
-        // pthread_mutex_unlock(philo->r_fork);
         print_status(philo, "is sleeping");
         ft_usleep(philo->tabla->time_to_sleep);
         print_status(philo, "is thinking");
@@ -152,7 +163,7 @@ int	main(int ac, char **av)
 	}
 	tabla.start = get_time();
 	pthread_mutex_init(&tabla.print, NULL);
-	// pthread_mutex_init(&tabla.lastmeal_mut, NULL);
+	pthread_mutex_init(&tabla.death_mut, NULL);
 	for (int i = 0; i < tabla.number_of_philosophers; i++) {
 		if (pthread_create(&tabla.philos[i].th, NULL, &routine, &tabla.philos[i]) == -1)
 			perror("create");

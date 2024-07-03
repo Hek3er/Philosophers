@@ -32,11 +32,21 @@ int	ft_isnumber(char c)
 	return (0);
 }
 
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 long	ft_atoi(char *str)
 {
-	int				i;
-	int				neg;
-	long			ret;
+	int							i;
+	int							neg;
+	unsigned long long			ret;
 
 	i = 0;
 	neg = 1;
@@ -55,5 +65,7 @@ long	ft_atoi(char *str)
 			return (ft_write("Please Provide a valid number", 2), -1);
 		ret = ret * 10 + (str[i++] - '0');
 	}
+	if (ret > LONG_MAX) 
+		return (ft_write("Please Provide a valid number", 2), -1);
 	return (ret * neg);
 }

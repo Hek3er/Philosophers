@@ -1,0 +1,7 @@
+// check the if ptr is not null then free
+// check makefile for relink
+// if one init failed it should destoy the ones set before
+// if ont destoy mutex failed it shouldn't exit but destroy other mutexes
+// remove unessesery variable like philo->death
+// remove print died (replace)
+// check for unessesery mutexes :

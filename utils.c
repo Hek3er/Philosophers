@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:59:41 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/29 00:11:40 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/07/04 03:32:33 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ long	ft_atoi(char *str)
 			return (ft_write("Please Provide a valid number", 2), -1);
 		ret = ret * 10 + (str[i++] - '0');
 	}
-	if (ret > LONG_MAX) 
+	if (ret > LONG_MAX)
 		return (ft_write("Please Provide a valid number", 2), -1);
 	return (ret * neg);
 }

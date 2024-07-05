@@ -26,7 +26,6 @@ typedef struct s_table	t_table;
 typedef struct s_philo
 {
 	int				id;
-	int				is_dead;
 	int				meal_c;
 	long			last_meal;
 	pthread_t		th;

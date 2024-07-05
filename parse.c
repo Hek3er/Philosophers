@@ -79,7 +79,6 @@ int	init_var(t_table *tabla)
 		return (free(tabla->philos), ft_write("Malloc failed", 2), 4);
 	while (++i < tabla->number_of_philo)
 	{
-		tabla->philos[i].is_dead = 0;
 		tabla->philos[i].id = i + 1;
 		tabla->philos[i].tabla = tabla;
 		tabla->philos[i].last_meal = get_time();

@@ -34,7 +34,7 @@ int	create_threads(t_table *tabla)
 	return (1);
 }
 
-int	destroy(t_table *tabla)
+void	destroy(t_table *tabla)
 {
 	int	i;
 
@@ -42,22 +42,21 @@ int	destroy(t_table *tabla)
 	while (i < tabla->number_of_philo)
 	{
 		if (pthread_mutex_destroy(&tabla->forks[i]) == -1)
-			return (ft_write("pthread_destroy failed\n", 2), 0);
+			ft_write("pthread_destroy failed\n", 2);
 		if (pthread_mutex_destroy(&tabla->philos[i].last_meal_mutex) == -1)
-			return (ft_write("pthread_destroy failed\n", 2), 0);
+			ft_write("pthread_destroy failed\n", 2);
 		if (pthread_mutex_destroy(&tabla->philos[i].meal_counter_mut) == -1)
-			return (ft_write("pthread_destroy failed\n", 2), 0);
+			ft_write("pthread_destroy failed\n", 2);
 		i++;
 	}
 	if (pthread_mutex_destroy(&tabla->death_mut) == -1)
-		return (ft_write("pthread_destroy failed\n", 2), 0);
+		ft_write("pthread_destroy failed\n", 2);
 	if (pthread_mutex_destroy(&tabla->print) == -1)
-		return (ft_write("pthread_destroy failed\n", 2), 0);
+		ft_write("pthread_destroy failed\n", 2);
 	if (tabla->forks)
 		free(tabla->forks);
 	if (tabla->philos)
 		free(tabla->philos);
-	return (1);
 }
 
 int	main(int ac, char **av)
@@ -80,6 +79,5 @@ int	main(int ac, char **av)
 		destroy(&tabla);
 		return (1);
 	}
-	if (destroy(&tabla) == 0)
-		return (1);
+	destroy(&tabla);
 }

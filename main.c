@@ -53,8 +53,10 @@ int	destroy(t_table *tabla)
 		return (ft_write("pthread_destroy failed\n", 2), 0);
 	if (pthread_mutex_destroy(&tabla->print) == -1)
 		return (ft_write("pthread_destroy failed\n", 2), 0);
-	free(tabla->forks);
-	free(tabla->philos);
+	if (tabla->forks)
+		free(tabla->forks);
+	if (tabla->philos)
+		free(tabla->philos);
 	return (1);
 }
 

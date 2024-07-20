@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 23:09:32 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/29 00:11:35 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:30:02 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ int			init_var(t_table *tabla);
 void		*routine(void *p);
 void		*monitor(void *p);
 void		print_status(t_philo *philo, char *str);
+void		print_msg(t_philo *philo, char *str);
 
 #endif

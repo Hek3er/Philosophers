@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:28:31 by azainabi          #+#    #+#             */
-/*   Updated: 2024/06/28 23:09:09 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:43:07 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	main(int ac, char **av)
 	tabla.start = get_time();
 	if (create_threads(&tabla) == 0)
 	{
-		destroy(&tabla);
+		// destroy(&tabla);
 		return (1);
 	}
-	destroy(&tabla);
+	// destroy(&tabla);
 }

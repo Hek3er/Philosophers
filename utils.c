@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:59:41 by azainabi          #+#    #+#             */
-/*   Updated: 2024/07/21 21:17:42 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:19:46 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	ft_strlen(char *str)
 
 long	ft_atoi(char *str)
 {
-	int			count;
-	long		number;
+	int					count;
+	unsigned long		number;
 
 	count = 0;
 	number = 0;
@@ -59,6 +59,4 @@ long	ft_atoi(char *str)
 	}
 	if (count >= 20 || number > LONG_MAX)
 		return (ft_write("Please Provide a valid number", 2), -1);
-	printf("number : %ld\n", number);
-	return (number);
-}
+	return ((long)number);}

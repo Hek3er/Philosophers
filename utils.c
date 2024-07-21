@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:59:41 by azainabi          #+#    #+#             */
-/*   Updated: 2024/07/04 03:32:33 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:17:42 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,6 @@ void	ft_write(char *str, int fd)
 	write(fd, "\n", 1);
 }
 
-int	ft_isnumber(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -44,28 +37,28 @@ int	ft_strlen(char *str)
 
 long	ft_atoi(char *str)
 {
-	int							i;
-	int							neg;
-	unsigned long long			ret;
+	int			count;
+	long		number;
 
-	i = 0;
-	neg = 1;
-	ret = 0;
-	while (str[i] != '\0' && (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	count = 0;
+	number = 0;
+	while (*str == '0' || *str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		if (str[i] == '-')
+		if (*str == '-')
 			return (ft_write("A number Can't be negative", 2), -1);
-		i++;
+		str++;
 	}
-	while (str[i] != '\0')
+	while (*str)
 	{
-		if (!ft_isnumber(str[i]))
+		if (*str < '0' || *str > '9')
 			return (ft_write("Please Provide a valid number", 2), -1);
-		ret = ret * 10 + (str[i++] - '0');
+		number = number * 10 + (*str++ - 48);
+		count++;
 	}
-	if (ret > LONG_MAX)
+	if (count >= 20 || number > LONG_MAX)
 		return (ft_write("Please Provide a valid number", 2), -1);
-	return (ret * neg);
+	printf("number : %ld\n", number);
+	return (number);
 }

@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:12:43 by azainabi          #+#    #+#             */
-/*   Updated: 2024/07/20 18:12:20 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/07/21 20:30:13 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,16 @@ int	check_philo_death(t_table *tabla)
 		pthread_mutex_lock(&tabla->philos[i].last_meal_mutex);
 		last_meal = tabla->philos[i].last_meal;
 		pthread_mutex_unlock(&tabla->philos[i].last_meal_mutex);
-		// printf("last_meal %ld\n", get_time() - last_meal);
 		if (get_time() - last_meal > tabla->time_to_die)
 		{
-			// print_msg(&tabla->philos[i], "has died");
 			pthread_mutex_lock(&tabla->death_mut);
 			tabla->death = 1;
 			pthread_mutex_unlock(&tabla->death_mut);
 			pthread_mutex_lock(&tabla->print);
-			printf("%ld %d died\n", get_time() - tabla->start, tabla->philos[i].id);
-			// pthread_mutex_unlock(&tabla->print);
+			printf("%ld %d died\n", get_time() \
+			- tabla->start, tabla->philos[i].id);
 			return (1);
 		}
-		// usleep(500);
 	}
 	return (0);
 }

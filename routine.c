@@ -6,7 +6,7 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 21:35:59 by azainabi          #+#    #+#             */
-/*   Updated: 2024/07/20 18:14:40 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/07/21 20:29:02 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,6 @@
 
 void	print_msg(t_philo *philo, char *str)
 {
-	// // int death ;
-	// pthread_mutex_lock(&philo->tabla->death_mut);
-	// 	// printf("%d\n", philo->tabla->death);
-	// if (philo->tabla->death)
-	// {
-	// 	usleep(500);
-	// 	return ;
-	// }
-	// pthread_mutex_unlock(&philo->tabla->death_mut);
 	pthread_mutex_lock(&philo->tabla->print);
 	printf("%ld %d %s\n", get_time() - philo->tabla->start, philo->id, str);
 	pthread_mutex_unlock(&philo->tabla->print);
